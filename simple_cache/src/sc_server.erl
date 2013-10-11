@@ -5,7 +5,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/0, insert/2]).
+-export([start_link/0, insert/2, lookup/1]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -27,6 +27,11 @@ start_link() ->
 -spec insert(Key::atom(), Value::term()) -> ok.
 insert(Key, Val) ->
   gen_server:cast(?SERVER, {insert, {Key, Val}}).
+
+%% @doc lookup the value for key
+-spec lookup(Key::atom()) -> Value::term() | undefined.
+lookup(Key) ->
+  gen_server:call(?SERVER, {lookup, Key}).
 
 %%%===================================================================
 %%% gen_server callbacks
@@ -60,6 +65,9 @@ init([]) ->
 %%                                   {stop, Reason, State}
 %% @end
 %%--------------------------------------------------------------------
+handle_call({lookup, Key}, _From, State) ->
+  Reply = proplists:get_value(Key, State),
+  {reply, Reply, State};
 handle_call(_Request, _From, State) ->
     Reply = ok,
     {reply, Reply, State}.
