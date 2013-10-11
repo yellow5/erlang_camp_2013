@@ -29,11 +29,11 @@ twomult([H|Tail], Acc) ->
   twomult(Tail, [H * 2|Acc]).
 
 %% @doc apply higher order func to list
--spec yourmap(function(), list()) -> list().
+-spec yourmap(fun(), list()) -> list().
 yourmap(F, List) ->
   lists:reverse(yourmap(List, F, [])).
 
--spec yourmap(list(), function(), list()) -> list().
+-spec yourmap(list(), fun(), list()) -> list().
 yourmap([], _F, Acc) ->
   Acc;
 yourmap([H|T], F, Acc) ->
