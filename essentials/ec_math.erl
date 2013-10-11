@@ -6,11 +6,13 @@
 -export([op/3, not_less_than_2/1]).
 
 %% @doc performs the operation on two values
--spec op(add | sub, number(), number()) -> number().
+-spec op(add | sub, number(), number()) -> number() | error.
 op(add, A, B) ->
   A + B;
-op(sub, A, B) ->
-  A - B.
+op(sub, A, B) when A >= B ->
+  A - B;
+op(sub, _A, _B) ->
+  error.
 
 %% @doc identifies values that are not less than 2
 -spec not_less_than_2(number()) -> string().
