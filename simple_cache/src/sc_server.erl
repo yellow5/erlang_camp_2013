@@ -5,7 +5,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/0, store/2]).
+-export([start_link/0, insert/2]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -23,10 +23,10 @@
 start_link() ->
     gen_server:start_link({local, ?SERVER}, ?IMPLEMENTATION_MODULE, [], []).
 
-%% @doc store a key/val
--spec store(Key::atom(), Value::term()) -> ok.
-store(Key, Val) ->
-  gen_server:cast(?SERVER, {store, {Key, Val}}).
+%% @doc insert a key/val
+-spec insert(Key::atom(), Value::term()) -> ok.
+insert(Key, Val) ->
+  gen_server:cast(?SERVER, {insert, {Key, Val}}).
 
 %%%===================================================================
 %%% gen_server callbacks
@@ -74,7 +74,7 @@ handle_call(_Request, _From, State) ->
 %%                                  {stop, Reason, State}
 %% @end
 %%--------------------------------------------------------------------
-handle_cast({store, {Key, Val}}, State) ->
+handle_cast({insert, {Key, Val}}, State) ->
   {noreply, [{Key, Val}|State]};
 handle_cast(_Msg, State) ->
     {noreply, State}.
