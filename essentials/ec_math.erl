@@ -6,7 +6,7 @@
 -export([op/3]).
 
 %% @doc performs the operation on two values
--spec op(atom(), number(), number()) -> number().
+-spec op(add | sub, number(), number()) -> number().
 op(add, A, B) ->
   A + B;
 op(sub, A, B) ->
