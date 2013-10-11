@@ -3,7 +3,7 @@
 %%% @copyright 2013 Erlware
 
 -module(ec_lists).
--export([print_each/1, twomult/1]).
+-export([print_each/1, twomult/1, yourmap/2]).
 
 %% @doc recursivley print each element in the list
 -spec print_each(list()) -> string().
@@ -27,3 +27,14 @@ twomult([], Acc) ->
   Acc;
 twomult([H|Tail], Acc) ->
   twomult(Tail, [H * 2|Acc]).
+
+%% @doc apply higher order func to list
+-spec yourmap(function(), list()) -> list().
+yourmap(F, List) ->
+  lists:reverse(yourmap(List, F, [])).
+
+-spec yourmap(list(), function(), list()) -> list().
+yourmap([], _F, Acc) ->
+  Acc;
+yourmap([H|T], F, Acc) ->
+  yourmap(T, F, [F(H)|Acc]).
