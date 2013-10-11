@@ -5,7 +5,7 @@
 -behaviour(gen_server).
 
 %% API
--export([start_link/0, insert/2, lookup/1]).
+-export([start_link/0, insert/2, lookup/1, stop/0]).
 
 %% gen_server callbacks
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -32,6 +32,11 @@ insert(Key, Val) ->
 -spec lookup(Key::atom()) -> Value::term() | undefined.
 lookup(Key) ->
   gen_server:call(?SERVER, {lookup, Key}).
+
+%% @doc stop the server
+-spec stop() -> ok.
+stop() ->
+  gen_server:cast(?SERVER, stop).
 
 %%%===================================================================
 %%% gen_server callbacks
@@ -84,6 +89,8 @@ handle_call(_Request, _From, State) ->
 %%--------------------------------------------------------------------
 handle_cast({insert, {Key, Val}}, State) ->
   {noreply, [{Key, Val}|State]};
+handle_cast(stop, State) ->
+  {stop, just_cuz, State};
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
