@@ -7,10 +7,13 @@
 
 %% @doc returns a string of dashes
 -spec hr(number()) -> string().
-hr(1) ->
-  "-";
 hr(N) ->
-  "-" ++ hr(N - 1).
+  hr(N, "").
+
+hr(0, Acc) ->
+  Acc;
+hr(N, Acc) ->
+  hr(N-1, Acc ++ "-").
 
 %% @doc returns the sum of values less than a number
 -spec sum_seq(number()) -> number().
